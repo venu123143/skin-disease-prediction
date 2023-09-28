@@ -21,23 +21,23 @@ const Home = () => {
       return;
     }
     dispatch(setAllImages(image));
-    // const formData = new FormData();
-    // formData.append("file", image);
+    const formData = new FormData();
+    formData.append("file", image);
 
-    // try {
-    //   const res = await axios.post(`${server}/api/diagnose`, formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   });
+    try {
+      const res = await axios.post(`${server}/api/diagnose`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    //   console.log(res.data, " resonce.data");
-    //   console.log(res, " responce");
+      console.log(res.data, " resonce.data");
+      console.log(res, " responce");
 
-    //   alert("Image uploaded successfully");
-    // } catch (error) {
-    //   console.error("Error uploading image:", error);
-    // }
+      alert("Image uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
     navigate('/images')
   };
 
@@ -72,7 +72,7 @@ const Home = () => {
           </label>
           <button
             onClick={handleUpload}
-            className="px-3 py-2 bg-red-600 hover:bg-red-700 my-5 text-white rounded-md"
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 my-5 text-white rounded-md"
           >
             submit
           </button>

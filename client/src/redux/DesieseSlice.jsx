@@ -13,6 +13,10 @@ export const authSlice = createSlice({
       state.value = action.payload;
     },
     setAllImages: (state, action) => {
+      if (typeof action.payload === "Array") {
+        console.log('asseree');
+        state.images.push(action.payload.flat(1));
+      }
       state.images.push(action.payload);
     },
   },
