@@ -1,11 +1,38 @@
 import { useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import { server } from "../../Origin";
+import axios from "axios";
 
 const Home = () => {
   const [image, setImage] = useState("");
-  
+
   const handleUploadFile = (e) => {
-    console.log(e.target.value);
+    setImage(e.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    if (!selectedImage) {
+      alert("Please select an image to upload");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("file", image);
+
+    try {
+      const res= await axios.post(`${server}/api/diagnose`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log(res.data, " resonce.data");
+      console.log(res , " responce")
+
+      alert("Image uploaded successfully");
+      
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
   };
 
   return (
@@ -38,6 +65,9 @@ const Home = () => {
               value={image}
             />
           </label>
+          <button onClick={handleUpload} className="bg-black">submit</button>
+        </div>
+        <div>
         </div>
       </div>
     </>
