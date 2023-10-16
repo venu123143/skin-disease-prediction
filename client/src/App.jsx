@@ -8,7 +8,6 @@ import Layout from "./components/layout/Layout";
 import Images from "./components/Home/Images";
 import Login from "./components/Login/Login";
 import SignUpPage from "./components/Login/Register";
-import ImageGallery from "./pages/ImageGalary";
 
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
           <Route path="/images" element={<Images />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<SignUpPage />} />
-          <Route path="/galary" element={<ImageGallery />} />
         </Route>
       </Routes>
     </div>

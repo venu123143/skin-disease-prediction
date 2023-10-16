@@ -66,3 +66,29 @@
   cursor: pointer;
   margin: 5px;
 }
+
+/* CSS for the zoomed effect */
+.zoomed {
+  transform: scale(1.5); /* You can adjust the scale value as needed */
+  transition: transform 0.3s ease; /* Add a smooth transition effect */
+}
+
+/* Container for the magnifier */
+.magnifier-container {
+  width: 400px; /* Adjust the width and height as needed */
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+/* Magnified image */
+.magnified-image {
+  width: 100%; /* Set the width and height to match the container */
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: background-position 0.2s ease; /* Add a smooth transition effect */
+}
+

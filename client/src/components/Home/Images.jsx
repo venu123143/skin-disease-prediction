@@ -1,26 +1,28 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { RxCross2 } from "react-icons/rx";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+
 const Images = () => {
-  const navigate = useNavigate();
   const { images } = useSelector((state) => state.desiese);
-  // const imageURL = URL.createObjectURL(file)
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentImage, setCurrentImage] = useState(images[0]);
+  const [isZoomed, setIsZoomed] = useState(false); // Track zoom state
 
   const closeFullscreen = () => {
     setCurrentIndex(null);
     setIsFullscreen(false);
     setCurrentImage(null);
+    setIsZoomed(false);
   };
 
   const nextImage = () => {
     if (currentIndex < images.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setCurrentImage(URL.createObjectURL(images[currentIndex + 1]));
-    }
-     else if (currentIndex >= images.length - 1) {
+      setIsZoomed(false); // Reset zoom state when changing images
+    } else if (currentIndex >= images.length - 1) {
       setIsFullscreen(false);
     }
   };
@@ -29,6 +31,7 @@ const Images = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
       setCurrentImage(URL.createObjectURL(images[currentIndex - 1]));
+      setIsZoomed(false); // Reset zoom state when changing images
     } else if (currentIndex <= 0) {
       setIsFullscreen(false);
     }
@@ -38,24 +41,45 @@ const Images = () => {
     setIsFullscreen(true);
     setCurrentImage(URL.createObjectURL(images[index]));
   };
+  const toggleZoom = () => {
+    setIsZoomed(!isZoomed); // Toggle zoom state
+  };
+
 
   return (
     <div className="p-5 ">
       <div className={`fullscreen-overlay ${isFullscreen ? "active" : ""}`}>
-        <div className="fullscreen-modal">
+        <div
+          className={`fullscreen-modal overflow-hidden relative`}
+         
+        >
           <img
             src={currentImage}
             alt={`Image ${currentIndex + 1}`}
-            className="fullscreen-image"
+            onClick={toggleZoom}
+            className={`fullscreen-image ${
+              isZoomed
+                ? `hover:scale-125 duration-500 transition-all scroll-smooth cursor-move `
+                : "scale-100 duration-500 transition-all"
+            }`}
           />
-          <span className="close-button" onClick={closeFullscreen}>
-            &times;
+          <span
+            className="close-button p-2 hover:bg-gray-600 rounded-full"
+            onClick={closeFullscreen}
+          >
+            <RxCross2 size={25} />
           </span>
-          <span className="prev-button" onClick={prevImage}>
-            &#8249;
+          <span
+            className="prev-button p-2 hover:bg-gray-600 rounded-full"
+            onClick={prevImage}
+          >
+            <AiOutlineLeft size={25} />
           </span>
-          <span className="next-button" onClick={nextImage}>
-            &#8250;
+          <span
+            className="next-button p-2 hover:bg-gray-600 rounded-full"
+            onClick={nextImage}
+          >
+            <AiOutlineRight size={25} />
           </span>
         </div>
       </div>

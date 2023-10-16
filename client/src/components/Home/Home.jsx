@@ -5,10 +5,22 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setAllImages } from "../../redux/DesieseSlice";
+import { BarLoader } from "react-spinners"
+
+
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [image, setImage] = useState("");
+  const [loading, setLoading] = useState(false)
+  
+  const override = {
+    display: "block",
+    margin: "0 auto",
+    borderColor: "red",
+    width: "100%",
+    borderRadius:"40px"
+  };
 
   const handleUploadFile = (e) => {
     console.log(e.target.files[0]);
@@ -16,7 +28,9 @@ const Home = () => {
   };
 
   const handleUpload = async () => {
+    setLoading(true)
     if (image === "") {
+      setLoading(false)
       alert("Please select an image to upload");
       return;
     }
@@ -24,31 +38,40 @@ const Home = () => {
     const formData = new FormData();
     formData.append("file", image);
 
-    try {
-      const res = await axios.post(`${server}/api/diagnose`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+    // try {
+    //   const res = await axios.post(`${server}/api/diagnose`, formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   });
 
-      console.log(res.data, " resonce.data");
-      console.log(res, " responce");
+    //   console.log(res.data, " resonce.data");
+    //   console.log(res, " responce");
 
-      alert("Image uploaded successfully");
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
+    //   alert("Image uploaded successfully");
+    // } catch (error) {
+    //   console.error("Error uploading image:", error);
+    // }
+    setLoading(false)
     navigate('/images')
   };
+
 
   return (
     <>
       <div className="h-screen flex justify-center">
-        <div className="p-[100px]  w-full">
+        <div className="sm:p-[100px] px-5  w-full">
           <h3 className="font-[550] text-[1.5rem] m-5">Upload Image</h3>
+          <BarLoader
+           color="#361AE3"
+           loading={loading}
+           cssOverride={override}
+           aria-label="Loading Spinner"
+           data-testid="loader"
+         />
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-md cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <AiOutlineCloudUpload
